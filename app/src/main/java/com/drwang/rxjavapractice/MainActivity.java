@@ -9,7 +9,6 @@ import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -82,26 +81,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Observable getStringObservable() {
-        return Observable.create(new ObservableOnSubscribe<String>() {
-            @Override
-            public void subscribe(@NonNull ObservableEmitter<String> e) throws Exception {
-                SystemClock.sleep(1000);
-                Log.i("zip", "finish: S1 FINISH");
-                e.onNext("1000");
-                e.onComplete();
-            }
+        return Observable.create((ObservableOnSubscribe<String>) e -> {
+            SystemClock.sleep(1000);
+            Log.i("zip", "finish: S1 FINISH");
+            e.onNext("1000");
+            e.onComplete();
         });
     }
 
     private Observable getStringObservable2() {
-        return Observable.create(new ObservableOnSubscribe<String>() {
-            @Override
-            public void subscribe(@NonNull ObservableEmitter<String> e) throws Exception {
-                SystemClock.sleep(3000);
-                Log.i("zip", "finish: S2 FINISH");
-                e.onNext("3000");
-                e.onComplete();
-            }
+        return Observable.create((ObservableOnSubscribe<String>) e -> {
+            SystemClock.sleep(3000);
+            Log.i("zip", "finish: S2 FINISH");
+            e.onNext("3000");
+            e.onComplete();
         });
     }
 
